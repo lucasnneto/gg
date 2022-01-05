@@ -1,23 +1,40 @@
 <template>
-  <v-container>
-    <div class="d-flex justify-space-between">
-      <h1 class="d-flex align-center">
-        <router-link
-          to="/jokenpo"
-          style="text-decoration: none"
-          class="font-weight-bold d-flex align-center"
+  <v-flex class="mx-5 mt-5">
+    <div
+      class="d-flex justify-space-between"
+      :class="{ 'flex-column': isMobile }"
+    >
+      <div class="d-flex align-center" :class="{ 'flex-column': isMobile }">
+        <h1
+          class="d-flex align-center"
+          :style="isMobile ? 'font-size: 30px' : ''"
         >
-          <v-icon size="36" color="black"> mdi-chevron-left </v-icon>
-        </router-link>
-        Pedra Papel Tesoura
-        <v-chip class="font-weight-medium ml-3">Contra Máquina</v-chip>
-      </h1>
-      <v-btn @click="cleanStatus">Limpar Status</v-btn>
+          <router-link
+            to="/jokenpo"
+            style="text-decoration: none"
+            class="font-weight-bold d-flex align-center"
+          >
+            <v-icon size="36" color="black"> mdi-chevron-left </v-icon>
+          </router-link>
+          Pedra Papel Tesoura
+        </h1>
+        <v-chip class="font-weight-medium ml-3"
+          >{{ isMobile ? "" : "Contra" }} Máquina</v-chip
+        >
+      </div>
+      <v-btn
+        :fab="isMobile"
+        :style="isMobile ? 'align-self: end' : ''"
+        @click="cleanStatus"
+      >
+        <v-icon v-if="isMobile" size="30">mdi-delete</v-icon>
+        <span v-else> Limpar Status </span>
+      </v-btn>
     </div>
     <div class="d-flex justify-space-between my-5">
       <div class="pa-3 d-flex align-center">
-        <v-icon size="60">mdi-sword-cross</v-icon>
-        <div class="d-flex flex-column justify-center align-center ml-2">
+        <v-icon v-if="!isMobile" size="60" class="mr-2">mdi-sword-cross</v-icon>
+        <div class="d-flex flex-column justify-center align-center">
           <p>Partidas</p>
           <p class="font-weight-bold" style="font-size: 50px">
             {{ counter.all }}
@@ -25,8 +42,8 @@
         </div>
       </div>
       <div class="pa-3 d-flex align-center">
-        <v-icon size="40">mdi-trophy</v-icon>
-        <div class="d-flex flex-column justify-center align-center ml-2">
+        <v-icon v-if="!isMobile" size="40" class="mr-2">mdi-trophy</v-icon>
+        <div class="d-flex flex-column justify-center align-center">
           <p>Vitória</p>
           <p class="font-weight-bold" style="font-size: 30px">
             {{ counter.win }}
@@ -34,8 +51,10 @@
         </div>
       </div>
       <div class="pa-3 d-flex align-center">
-        <v-icon size="40">mdi-close-circle</v-icon>
-        <div class="d-flex flex-column justify-center align-center ml-2">
+        <v-icon v-if="!isMobile" size="40" class="mr-2"
+          >mdi-close-circle</v-icon
+        >
+        <div class="d-flex flex-column justify-center align-center">
           <p>Derrota</p>
           <p class="font-weight-bold" style="font-size: 30px">
             {{ counter.lose }}
@@ -43,8 +62,10 @@
         </div>
       </div>
       <div class="pa-3 d-flex align-center">
-        <v-icon size="40">mdi-shield-half-full</v-icon>
-        <div class="d-flex flex-column justify-center align-center ml-2">
+        <v-icon v-if="!isMobile" size="40" class="mr-2"
+          >mdi-shield-half-full</v-icon
+        >
+        <div class="d-flex flex-column justify-center align-center">
           <p>Empate</p>
           <p class="font-weight-bold" style="font-size: 30px">
             {{ counter.tie }}
@@ -53,7 +74,7 @@
       </div>
     </div>
     <v-row class="align-center">
-      <v-col>
+      <v-col sm="4" cols="12">
         <v-card
           @click="choice('PEDRA')"
           class="pa-3 d-flex flex-column align-center"
@@ -62,7 +83,7 @@
           <p class="mt-3 mb-0 font-weight-bold">PEDRA</p>
         </v-card>
       </v-col>
-      <v-col>
+      <v-col sm="4" cols="12">
         <v-card
           @click="choice('PAPEL')"
           class="pa-3 d-flex flex-column align-center"
@@ -71,7 +92,7 @@
           <p class="mt-3 mb-0 font-weight-bold">PAPEL</p>
         </v-card>
       </v-col>
-      <v-col>
+      <v-col sm="4" cols="12">
         <v-card
           @click="choice('TESOURA')"
           class="pa-3 d-flex flex-column align-center"
@@ -88,7 +109,7 @@
       :you="you"
       :enemy="bot"
     />
-  </v-container>
+  </v-flex>
 </template>
 <script>
 import status from "./status.vue";
@@ -115,6 +136,11 @@ export default {
     if (counter) {
       this.counter = counter;
     }
+  },
+  computed: {
+    isMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
   },
   methods: {
     cleanStatus() {

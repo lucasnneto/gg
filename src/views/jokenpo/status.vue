@@ -1,6 +1,9 @@
 <template>
-  <v-dialog persistent :value="modal" max-width="500px">
-    <v-card min-height="500px" class="d-flex align-center justify-center pa-3">
+  <v-dialog persistent :value="modal" max-width="500px" :fullscreen="isMobile">
+    <v-card
+      :min-height="isMobile ? '100%' : '500px'"
+      class="d-flex align-center justify-center pa-3"
+    >
       <div v-if="animation === 0">
         <v-img
           src="@/assets/pedra.png"
@@ -100,6 +103,9 @@ export default {
     this.countdownTimer();
   },
   computed: {
+    isMobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     cmptStatus() {
       switch (this.status) {
         case STATUS.VICTORY:
