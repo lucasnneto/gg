@@ -4,7 +4,13 @@
       class="d-flex justify-space-between"
       :class="{ 'flex-column': isMobile }"
     >
-      <div class="d-flex align-center" :class="{ 'flex-column': isMobile }">
+      <div
+        class="d-flex"
+        :class="{
+          'flex-column align-start': isMobile,
+          'align-center': !isMobile,
+        }"
+      >
         <h1
           class="d-flex align-center"
           :style="isMobile ? 'font-size: 30px' : ''"
